@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">ListMovieApp</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="test_name">Name Movie</string>
+    <string name="test_year">2000</string>
+    <string name="test_name_user">User N. N.</string>
+    <string name="zapyataya">,</string>
+    <string name="movies">Movies</string>
 </resources>

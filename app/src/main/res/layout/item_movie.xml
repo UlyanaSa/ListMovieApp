@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        app:cardCornerRadius="16dp"
+        android:elevation="16dp"
+        android:layout_margin="8dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/movie_name"
+                style="@style/HeaderText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/test_name"
+                />
+            <TextView
+                android:id="@+id/text"
+                style="@style/HeaderText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/zapyataya"
+                android:layout_marginEnd="8dp"/>
+
+            <TextView
+                android:id="@+id/year"
+                style="@style/HeaderText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/test_year" />
+        </LinearLayout>
+
+            <TextView
+                android:id="@+id/directorName"
+                style="@style/BodyText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/test_name_user" />
+
+            <TextView
+                android:id="@+id/actor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/test_name_user"
+                style="@style/BodyText"
+                android:gravity="center"
+                android:layout_marginTop="8dp"
+                android:maxLines="3"
+                android:layout_marginHorizontal="16dp"
+                />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>
