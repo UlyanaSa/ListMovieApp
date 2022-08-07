@@ -1,24 +1,16 @@
 package com.osvin.listmovieapp.ui.fragment
-
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.osvin.listmovieapp.R
-import com.osvin.listmovieapp.data.network.MovieApi
-import com.osvin.listmovieapp.data.network.RetrofitInstance
 import com.osvin.listmovieapp.databinding.FragmentMovieBinding
-import com.osvin.listmovieapp.domain.AppRepository
 import com.osvin.listmovieapp.entity.NewMovie
 import com.osvin.listmovieapp.ui.adapter.MovieAdapter
 import com.osvin.listmovieapp.ui.viewModel.MovieViewModel
-import com.osvin.listmovieapp.ui.viewModel.MovieViewModelFactory
 
 class MovieFragment : Fragment() {
     companion object{
@@ -27,50 +19,67 @@ class MovieFragment : Fragment() {
     }
     private lateinit var binding: FragmentMovieBinding
     private lateinit var movieAdapter: MovieAdapter
-    private lateinit var movieViewModel: MovieViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val movieApi = RetrofitInstance.api
-        val appRepository = AppRepository(movieApi)
-        movieViewModel = ViewModelProvider(this,MovieViewModelFactory(appRepository))[MovieViewModel::class.java]
-        movieAdapter = MovieAdapter()
-    }
+    private val movieViewModel: MovieViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMovieBinding.inflate(inflater, container, false)
-        // Inflate the layout for this fragment
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        movieAdapter = MovieAdapter()
+
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = movieAdapter
         }
 
-
-        observeMovieVM()
+        (binding.recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
         movieViewModel.getAllMovies()
+        observeMovieList()
+        observePosition()
+        observeCheckedMovie()
 
         movieAdapter.onClickItem = {
-            val dialogFragment = MyDialogFragment()
-            val bundle = Bundle()
-            bundle.putString(MOVIE_NAME, it.title)
-            dialogFragment.arguments = bundle
-            dialogFragment.show(childFragmentManager, REQUEST_KEY)
+            movieViewModel.isCheckedMovie(it)
+            createdDialogFragment(it.title)
         }
     }
 
-    private fun observeMovieVM() {
+    override fun onStop() {
+        super.onStop()
+        val newPosition = (binding.recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+        movieViewModel.savePosition(newPosition)
+    }
+
+    fun createdDialogFragment(title: String){
+        val dialogFragment = MyDialogFragment()
+        val bundle = Bundle()
+        bundle.putString(MOVIE_NAME, title)
+        dialogFragment.arguments = bundle
+        dialogFragment.show(childFragmentManager, REQUEST_KEY)
+    }
+
+    private fun observeCheckedMovie() {
+        movieViewModel.titleMovieLiveData.observe(viewLifecycleOwner, Observer {
+            createdDialogFragment(it)
+        })
+    }
+
+    private fun observePosition() {
+        movieViewModel.positionLiveData.observe(viewLifecycleOwner, Observer {
+            (binding.recyclerView.layoutManager as LinearLayoutManager).scrollToPosition(it)
+        })
+    }
+
+    private fun observeMovieList() {
         movieViewModel.movieListLiveData.observe(viewLifecycleOwner, Observer {
             movieAdapter.setMovie(it as ArrayList<NewMovie>)
         })
     }
-
+    
 }

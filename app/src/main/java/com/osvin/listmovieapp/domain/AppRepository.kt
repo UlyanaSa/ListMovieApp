@@ -2,6 +2,7 @@ package com.osvin.listmovieapp.domain
 
 import android.util.Log
 import com.osvin.listmovieapp.data.network.MovieApi
+import com.osvin.listmovieapp.data.network.RetrofitInstance
 import com.osvin.listmovieapp.entity.Actor
 import com.osvin.listmovieapp.entity.Movie
 import com.osvin.listmovieapp.entity.NewMovie
@@ -10,8 +11,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class AppRepository(private val api: MovieApi) {
+
+class AppRepository
+@Inject constructor( private val api: MovieApi) {
     companion object{
         const val TAG = "TAG"
     }
