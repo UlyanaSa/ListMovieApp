@@ -10,9 +10,9 @@ class MovieActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //val fragmentManager = supportFragmentManager
-        //val fragmentTransaction = fragmentManager.beginTransaction()
-        //fragmentTransaction.replace(R.id.fragment, MovieFragment()).commit()
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.main_container, MovieFragment()).commit()
 
     }
 

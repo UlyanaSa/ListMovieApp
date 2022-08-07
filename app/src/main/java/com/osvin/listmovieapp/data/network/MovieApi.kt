@@ -1,6 +1,6 @@
 package com.osvin.listmovieapp.data.network
-
-import com.osvin.listmovieapp.entity.Item
+import com.osvin.listmovieapp.entity.Movie
+import com.osvin.listmovieapp.entity.ResponseBody
 import retrofit2.Response
 import retrofit2.http.GET
 
@@ -11,5 +11,5 @@ interface MovieApi {
     }
 
     @GET("films.json")
-    fun getAllMovies(): Response<List<Item>>
+    suspend fun getAllMovies(): Response<ResponseBody>
 }

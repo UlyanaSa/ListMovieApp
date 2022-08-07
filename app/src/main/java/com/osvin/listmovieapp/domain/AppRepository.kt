@@ -3,7 +3,7 @@ package com.osvin.listmovieapp.domain
 import android.util.Log
 import com.osvin.listmovieapp.data.network.MovieApi
 import com.osvin.listmovieapp.entity.Actor
-import com.osvin.listmovieapp.entity.Item
+import com.osvin.listmovieapp.entity.Movie
 import com.osvin.listmovieapp.entity.NewMovie
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -23,13 +23,13 @@ class AppRepository(private val api: MovieApi) {
             for (i in movieList.indices) {
                 val actors = movieList[i].actors.sortedWith(compareBy { it.actorName })
                 val newActors = ArrayList<Actor>()
-                for (j in actors.indices) {
-                    if(actors[j] != actors[j+1]){
-                        newActors.add(actors[j])
+                for (j in 1 until actors.size) {
+                    if(actors[j-1] != actors[j]){
+                        newActors.add(actors[j-1])
                     }
                 }
-                val dir = movieList[i].directorName.trim(' ').toList()
-                val dirName = dir[2].toString()+" "+dir[0].toString().substring(0,1)+"."+dir[1].toString().substring(0,1)+"."
+                val dir = movieList[i].directorName.split(" ")
+                val dirName = dir[2]+" "+dir[0].substring(0,1)+". "+dir[1].substring(0,1)+"."
                 val listActors = newActors.joinToString(separator = ", ")
                 newMovie.add(
                     NewMovie(
@@ -45,18 +45,18 @@ class AppRepository(private val api: MovieApi) {
 
     }
 
-    suspend fun getAllMovies(): List<Item> = withContext(Dispatchers.IO) {
-        val movieList = ArrayList<Item>()
+    private suspend fun getAllMovies(): List<Movie> = withContext(Dispatchers.IO) {
+        val movieList = ArrayList<Movie>()
         val response = api.getAllMovies()
         if (response.isSuccessful) {
             if (response.body() != null) {
-                val size = response.body()!!.size
+                val size = response.body()!!.items.size
                 for (i in 0 until size) {
-                    val movie = Item(
-                        directorName = response.body()!![i].directorName,
-                        actors = response.body()!![i].actors,
-                        releaseYear = response.body()!![i].releaseYear,
-                        title = response.body()!![i].title
+                    val movie = Movie(
+                        directorName = response.body()!!.items[i].directorName,
+                        actors = response.body()!!.items[i].actors,
+                        releaseYear = response.body()!!.items[i].releaseYear,
+                        title = response.body()!!.items[i].title
                     )
                     movieList.add(movie)
                 }

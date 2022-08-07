@@ -36,15 +36,19 @@ class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        holder.binding.movieName.text = listMovie[position].title
+        holder.binding.movieName.text = listMovie[position].title.trim(' ')+", "+listMovie[position].releaseYear
         holder.binding.actor.text = listMovie[position].actors
         holder.binding.directorName.text = listMovie[position].directorName
-        holder.binding.year.text = listMovie[position].releaseYear
 
         holder.itemView.setOnClickListener {
             onClickItem?.invoke(listMovie[position])
-            listMovie[position].onChecked = true
-            it.setBackgroundColor(Color.parseColor("#E3B8F3"))
+            if( listMovie[position].onChecked){
+                listMovie[position].onChecked = false
+                it.setBackgroundColor(Color.parseColor("#E3B8F3"))
+            }else {
+                listMovie[position].onChecked = true
+                it.setBackgroundColor(Color.WHITE)
+            }
         }
     }
 
