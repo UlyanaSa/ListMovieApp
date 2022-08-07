@@ -32,7 +32,7 @@ class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
         holder.binding.directorName.text = listMovie[position].directorName
         val title = listMovie[position].title.trim(' ')
         val year = listMovie[position].releaseYear
-        holder.binding.movieName.text = "$title, $year"
+        holder.binding.movieName.text = "$title $year"
         holder.itemView.setOnClickListener {
             onClickItem?.invoke(listMovie[position])
         }

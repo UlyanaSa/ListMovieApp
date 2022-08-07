@@ -32,7 +32,7 @@ class AppRepository
                     }
                 }
                 val dir = movieList[i].directorName.split(" ")
-                val dirName = dir[2]+" "+dir[0].substring(0,1)+". "+dir[1].substring(0,1)+"."
+                val dirName = dir[2]+" "+dir[0].substring(0,1)+"."+dir[1].substring(0,1)+"."
                 val listActors = newActors.joinToString(separator = ", ")
                 newMovie.add(
                     NewMovie(
