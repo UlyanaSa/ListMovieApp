@@ -27,6 +27,10 @@ class MovieViewModel
         _titleMovieLiveData.value = movie.title
     }
 
+    fun saveData(data: List<NewMovie>){
+        _movieListLiveData.value = data
+    }
+
     fun savePosition(position: Int){
         _positionLiveData.value = position
     }

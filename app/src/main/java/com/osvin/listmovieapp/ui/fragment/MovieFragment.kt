@@ -1,4 +1,9 @@
 package com.osvin.listmovieapp.ui.fragment
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,12 +26,14 @@ class MovieFragment : Fragment() {
     private lateinit var movieAdapter: MovieAdapter
     private val movieViewModel: MovieViewModel by activityViewModels()
     private lateinit var nameMovie: String
+    private lateinit var saveMovieList: List<NewMovie>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMovieBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 
@@ -55,6 +62,9 @@ class MovieFragment : Fragment() {
         super.onStop()
         val newPosition = (binding.recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
         movieViewModel.savePosition(newPosition)
+       // запускаем сохраненный лист фильмов. такое легкое сохранение рассчитано только на то,
+        // что лист фильмов уже был когда-то загружен
+        movieViewModel.saveData(saveMovieList)
     }
 
     private fun createdDialogFragment(title: String){
@@ -80,8 +90,13 @@ class MovieFragment : Fragment() {
 
     private fun observeMovieList() {
         movieViewModel.movieListLiveData.observe(viewLifecycleOwner, Observer {
+          // сохраняем лист на случай отключения интернет соединения
+            saveMovieList = it
             movieAdapter.setMovie(it as ArrayList<NewMovie>)
         })
     }
+
+
+
 
 }
