@@ -11,6 +11,7 @@ import com.osvin.listmovieapp.databinding.ItemMovieBinding
 import com.osvin.listmovieapp.domain.MovieDiffUtilCallback
 
 import com.osvin.listmovieapp.entity.NewMovie
+import com.osvin.listmovieapp.ui.fragment.MyDialogFragment
 
 class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
@@ -42,13 +43,6 @@ class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
         holder.itemView.setOnClickListener {
             onClickItem?.invoke(listMovie[position])
-            if( listMovie[position].onChecked){
-                listMovie[position].onChecked = false
-                it.setBackgroundColor(Color.parseColor("#E3B8F3"))
-            }else {
-                listMovie[position].onChecked = true
-                it.setBackgroundColor(Color.WHITE)
-            }
         }
     }
 

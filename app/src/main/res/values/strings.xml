@@ -7,4 +7,6 @@
     <string name="test_name_user">User N. N.</string>
     <string name="zapyataya">,</string>
     <string name="movies">Movies</string>
+    <string name="test_text">filters *movie name* was clicked</string>
+    <string name="ok">OK!</string>
 </resources>

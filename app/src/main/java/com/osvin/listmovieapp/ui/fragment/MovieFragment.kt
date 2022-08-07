@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,7 +21,10 @@ import com.osvin.listmovieapp.ui.viewModel.MovieViewModel
 import com.osvin.listmovieapp.ui.viewModel.MovieViewModelFactory
 
 class MovieFragment : Fragment() {
-
+    companion object{
+        const val MOVIE_NAME = "MOVIE_NAME"
+        const val REQUEST_KEY = "REQUEST_KEY"
+    }
     private lateinit var binding: FragmentMovieBinding
     private lateinit var movieAdapter: MovieAdapter
     private lateinit var movieViewModel: MovieViewModel
@@ -53,7 +57,14 @@ class MovieFragment : Fragment() {
 
         observeMovieVM()
         movieViewModel.getAllMovies()
-        movieAdapter.onClickItem
+
+        movieAdapter.onClickItem = {
+            val dialogFragment = MyDialogFragment()
+            val bundle = Bundle()
+            bundle.putString(MOVIE_NAME, it.title)
+            dialogFragment.arguments = bundle
+            dialogFragment.show(childFragmentManager, REQUEST_KEY)
+        }
     }
 
     private fun observeMovieVM() {
