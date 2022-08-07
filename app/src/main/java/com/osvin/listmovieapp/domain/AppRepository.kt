@@ -2,7 +2,6 @@ package com.osvin.listmovieapp.domain
 
 import android.util.Log
 import com.osvin.listmovieapp.data.network.MovieApi
-import com.osvin.listmovieapp.data.network.RetrofitInstance
 import com.osvin.listmovieapp.entity.Actor
 import com.osvin.listmovieapp.entity.Movie
 import com.osvin.listmovieapp.entity.NewMovie

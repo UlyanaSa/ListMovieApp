@@ -1,17 +1,9 @@
 package com.osvin.listmovieapp.ui.adapter
-
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
-
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-
 import com.osvin.listmovieapp.databinding.ItemMovieBinding
-import com.osvin.listmovieapp.domain.MovieDiffUtilCallback
-
 import com.osvin.listmovieapp.entity.NewMovie
-import com.osvin.listmovieapp.ui.fragment.MyDialogFragment
 
 class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
@@ -19,9 +11,8 @@ class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
     var onClickItem: ((NewMovie) -> Unit)? = null
 
     fun setMovie(newListMovie: ArrayList<NewMovie>){
-        val diffUtilResult = DiffUtil.calculateDiff(MovieDiffUtilCallback(listMovie, newListMovie))
-        listMovie = newListMovie
-        diffUtilResult.dispatchUpdatesTo(this)
+        this.listMovie = newListMovie
+        notifyDataSetChanged()
     }
 
     class MovieViewHolder(val binding: ItemMovieBinding): RecyclerView.ViewHolder(binding.root)
@@ -37,10 +28,11 @@ class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        holder.binding.movieName.text = listMovie[position].title.trim(' ')+", "+listMovie[position].releaseYear
         holder.binding.actor.text = listMovie[position].actors
         holder.binding.directorName.text = listMovie[position].directorName
-
+        val title = listMovie[position].title.trim(' ')
+        val year = listMovie[position].releaseYear
+        holder.binding.movieName.text = "$title, $year"
         holder.itemView.setOnClickListener {
             onClickItem?.invoke(listMovie[position])
         }

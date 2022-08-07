@@ -20,6 +20,7 @@ class MovieFragment : Fragment() {
     private lateinit var binding: FragmentMovieBinding
     private lateinit var movieAdapter: MovieAdapter
     private val movieViewModel: MovieViewModel by activityViewModels()
+    private lateinit var nameMovie: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,15 +39,15 @@ class MovieFragment : Fragment() {
             adapter = movieAdapter
         }
 
-        (binding.recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
         movieViewModel.getAllMovies()
+
         observeMovieList()
         observePosition()
         observeCheckedMovie()
 
         movieAdapter.onClickItem = {
             movieViewModel.isCheckedMovie(it)
-            createdDialogFragment(it.title)
+            createdDialogFragment(nameMovie)
         }
     }
 
@@ -56,7 +57,8 @@ class MovieFragment : Fragment() {
         movieViewModel.savePosition(newPosition)
     }
 
-    fun createdDialogFragment(title: String){
+    private fun createdDialogFragment(title: String){
+
         val dialogFragment = MyDialogFragment()
         val bundle = Bundle()
         bundle.putString(MOVIE_NAME, title)
@@ -66,7 +68,7 @@ class MovieFragment : Fragment() {
 
     private fun observeCheckedMovie() {
         movieViewModel.titleMovieLiveData.observe(viewLifecycleOwner, Observer {
-            createdDialogFragment(it)
+            nameMovie = it
         })
     }
 
@@ -81,5 +83,5 @@ class MovieFragment : Fragment() {
             movieAdapter.setMovie(it as ArrayList<NewMovie>)
         })
     }
-    
+
 }
