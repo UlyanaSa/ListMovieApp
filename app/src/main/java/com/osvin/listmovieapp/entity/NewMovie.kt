@@ -6,5 +6,6 @@ data class NewMovie(
 val actors: String,
 val directorName: String,
 val releaseYear: String,
-val title: String
+val title: String,
+var onChecked: Boolean = false
 )

@@ -1,18 +1,26 @@
 package com.osvin.listmovieapp.ui.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+
 import com.osvin.listmovieapp.databinding.ItemMovieBinding
-import com.osvin.listmovieapp.entity.Movie
+import com.osvin.listmovieapp.domain.MovieDiffUtilCallback
+
 import com.osvin.listmovieapp.entity.NewMovie
 
 class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
     private var listMovie = ArrayList<NewMovie>()
+    var onClickItem: ((NewMovie) -> Unit)? = null
+
     fun setMovie(newListMovie: ArrayList<NewMovie>){
-        this.listMovie = newListMovie
-        notifyDataSetChanged()
+        val diffUtilResult = DiffUtil.calculateDiff(MovieDiffUtilCallback(listMovie, newListMovie))
+        listMovie = newListMovie
+        diffUtilResult.dispatchUpdatesTo(this)
     }
 
     class MovieViewHolder(val binding: ItemMovieBinding): RecyclerView.ViewHolder(binding.root)
@@ -32,6 +40,12 @@ class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
         holder.binding.actor.text = listMovie[position].actors
         holder.binding.directorName.text = listMovie[position].directorName
         holder.binding.year.text = listMovie[position].releaseYear
+
+        holder.itemView.setOnClickListener {
+            onClickItem?.invoke(listMovie[position])
+            listMovie[position].onChecked = true
+            it.setBackgroundColor(Color.parseColor("#E3B8F3"))
+        }
     }
 
     override fun getItemCount(): Int {

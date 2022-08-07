@@ -3,7 +3,7 @@ package com.osvin.listmovieapp.entity
 
 import com.google.gson.annotations.SerializedName
 
-data class Movie(
+data class Item(
     @SerializedName("actors")
     val actors: List<Actor>,
     @SerializedName("directorName")
